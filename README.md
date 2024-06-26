@@ -13,6 +13,14 @@ React é uma biblioteca JavaScript para criar interfaces de usuário. É mantido
 4. [Componentes](#componentes)
     * [Maneiras de estilizar um componente](#maneiras-de-estilizar-um-componente)
 5. [Props](#props)
+    * [propTypes](#proptypes)
+    * [defaultProps](#defaultprops)
+6. [Conditional Rendering](#conditional-rendering)
+7. [Renderização de Listas](#renderização-de-listas)
+    * [Lista de objetos](#lista-de-objetos)
+    * [Ordenação de listas](#ordenação-de-listas)
+    * [Filtragem de listas](#filtragem-de-listas)
+    * [Lista de objetos com componentes](#lista-de-objetos-com-componentes)
 
 ## Instalação
 Para instalar o React, você precisa ter o Node.js instalado em sua máquina. O Node.js é uma plataforma construída sobre o motor JavaScript do Chrome para facilmente construir aplicações de rede rápidas e escaláveis. Você pode baixar o Node.js em [nodejs.org](https://nodejs.org/).
@@ -360,4 +368,152 @@ function App() {
 }
 
 export default App
+```
+
+## Renderização de Listas
+Você pode renderizar listas de elementos usando o método map().
+
+```jsx
+function List() {
+
+    const items = ['Item 1', 'Item 2', 'Item 3'];
+
+  return (
+    <ul>
+      {items.map((item, index) => (
+        <li key={index}>{item}</li>
+      ))}
+    </ul>
+  );
+}
+
+export default List
+```
+
+<b>Key</b> é uma propriedade especial que você precisa incluir ao criar listas de elementos. Ele ajuda o React a identificar quais itens foram alterados, adicionados ou removidos.
+
+Id costuma ser a melhor propriedade para ser usada como key.
+
+```jsx
+import List from './List';
+
+function App() {
+  return(
+    <List/>
+  );
+}
+
+export default App
+```
+
+### Lista de objetos
+```jsx
+function List() {
+
+    const items = [
+        {id: 1, name: 'Item 1', price: 100},
+        {id: 2, name: 'Item 2', price: 200},
+        {id: 3, name: 'Item 3', price: 300}
+    ];
+
+  return (
+    <ul>
+      {items.map((item) => (
+        <li key={item.id}>{item.name} - {item.price}</li>
+      ))}
+    </ul>
+  );
+}
+
+export default List
+```
+
+### Ordenação de listas
+```jsx
+function List() {
+
+    const items = [
+        {id: 1, name: 'Item 1', price: 100},
+        {id: 2, name: 'Item 2', price: 200},
+        {id: 3, name: 'Item 3', price: 300}
+    ];
+
+    items.sort((a, b) => a.price - b.price);// Ordena a lista pelo preço
+    // items.sort((a, b) => b.price - a.price);// Ordena a lista pelo preço de forma decrescente
+    // items.sort((a, b) => a.name.localeCompare(b.name));// Ordena a lista pelo nome
+    // items.sort((a, b) => b.name.localeCompare(a.name));// Ordena a lista pelo nome de forma decrescente
+
+  return (
+    <ul>
+      {items.map((item) => (
+        <li key={item.id}>{item.name} - {item.price}</li>
+      ))}
+    </ul>
+  );
+}
+
+export default List
+```
+
+### Filtragem de listas
+```jsx
+function List() {
+
+    const items = [
+        {id: 1, name: 'Item 1', price: 100},
+        {id: 2, name: 'Item 2', price: 200},
+        {id: 3, name: 'Item 3', price: 300}
+    ];
+
+    const filteredItems = items.filter((item) => item.price > 150);// Filtra os itens com preço maior que 150
+
+  return (
+    <ul>
+      {filteredItems.map((item) => (
+        <li key={item.id}>{item.name} - {item.price}</li>
+      ))}
+    </ul>
+  );
+}
+
+export default List
+```
+
+### Lista de objetos com componentes
+```jsx
+import List from "./List";
+
+function App() {
+
+    const items = [
+        {id: 1, name: 'Item 1', price: 100},
+        {id: 2, name: 'Item 2', price: 200},
+        {id: 3, name: 'Item 3', price: 300}
+    ];
+
+    return (
+        <List itens={items}/>
+    );
+}
+
+export default App
+```
+
+```jsx
+function List(props) {
+
+    const itensLista = props.itens;
+
+    const lista = itensLista.map((item) => (
+        <li key={item.id}>{item.name} - {item.price} reais</li>
+    ));
+
+    return (
+        <ul>
+            {lista}
+        </ul>
+    );
+}
+
+export default List
 ```
