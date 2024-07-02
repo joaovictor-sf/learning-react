@@ -1,5 +1,14 @@
+Aqui eu coloco o que aprendi sobre React, uma biblioteca JavaScript para criar interfaces de usuário.
+
+Minhas fontes foram os cursos [React Full Course for free ⚛️ (2024)](https://youtu.be/CgkZ7MvWUAA?si=jVcV3EVU6baYCm74) do canal Bro Code, [React Crash Course 2024](https://youtu.be/LDB4uaJ87e0?si=kX1QY6W7fDN6cZcl), o site [geeksforgeeks](https://www.geeksforgeeks.org/react-tutorial/) e o site [reactjs.org](https://reactjs.org/).
+
 # React
-React é uma biblioteca JavaScript para criar interfaces de usuário. É mantido pelo Facebook e por uma comunidade de desenvolvedores individuais e empresas. O React pode ser usado como uma base no desenvolvimento de aplicativos de página única ou móveis.
+React é uma biblioteca JavaScript para criar interfaces de usuário. Ele foi desenvolvido pelo Facebook em 2011 e lançado em 2013. React é a biblioteca JavaScript mais popular e é usada por empresas como Facebook, Instagram, Netflix, Airbnb, Twitter e Uber.
+
+## Por que usar React?
+React permite a criação de websites e aplicações web interativas e dinâmicas. Bastante rápido, especialmente com o novo compilador do React 19.
+
+Além disso, o React possui um grande eco-sistema de bibliotecas e ferramentas, como o Next.js e o React Native. O React pode ser dito como o melhor framework para conseguir um emprego.
 
 1. [Instalação](#instalação)
    * [A maneira que aprendi](#a-maneira-que-aprendi)
@@ -21,6 +30,15 @@ React é uma biblioteca JavaScript para criar interfaces de usuário. É mantido
     * [Ordenação de listas](#ordenação-de-listas)
     * [Filtragem de listas](#filtragem-de-listas)
     * [Lista de objetos com componentes](#lista-de-objetos-com-componentes)
+8. [Update Fuctions](#update-fuctions)
+9. [Hooks](#hooks)
+    * [Tipos de Hooks](#tipos-de-hooks)
+    * [State Hook](#state-hook)
+        * [useChange](#usechange)
+        * [Updating um objeto](#updating-um-objeto)
+        * [Updating um array](#updating-um-array)
+        * [Updating um array de objetos](#updating-um-array-de-objetos)
+    * [Effect Hook](#effect-hook)
 
 ## Instalação
 Para instalar o React, você precisa ter o Node.js instalado em sua máquina. O Node.js é uma plataforma construída sobre o motor JavaScript do Chrome para facilmente construir aplicações de rede rápidas e escaláveis. Você pode baixar o Node.js em [nodejs.org](https://nodejs.org/).
@@ -516,4 +534,356 @@ function List(props) {
 }
 
 export default List
+```
+
+## Update Fuctions
+Update functions são funções que atualizam o estado de um componente. Já que o react não permite a atualização direta do estado, você precisa usar uma função para atualizar o estado.
+
+```jsx
+import React, { useState } from 'react';
+
+function Counter() {
+
+    const [count, setCount] = useState(0);
+
+    const increment = () => {
+        setCount((prevCount) => prevCount + 1);
+    }
+
+    const decrement = () => {
+        setCount((prevCount) => prevCount - 1);
+    }
+
+    return (
+        <div>
+            <h1>{count}</h1>
+            <button onClick={increment}>Increment</button>
+            <button onClick={decrement}>Decrement</button>
+        </div>
+    );
+}
+
+export default Counter
+```
+
+Dessa forma, você garante que o estado é atualizado de forma correta. Se por exemplo, você colocar diversos setCount(count + 1) em um evento, o React não garante que o estado será atualizado de forma correta.
+
+## Hooks
+Hooks são funções que permitem que você use o estado e outros recursos do React em componentes de função. Eles permitem que você use o estado e outros recursos do React sem escrever uma classe.
+
+```jsx
+import React, { useState } from 'react';
+
+function Counter() {
+
+    const [count, setCount] = useState(0);
+
+    return (
+        <div>
+            <h1>{count}</h1>
+            <button onClick={() => setCount(count + 1)}>Increment</button>
+        </div>
+    );
+}
+
+export default Counter
+```
+
+***Nota:*** 
+Hooks  não funcionam em  classes.
+
+### Tipos de Hooks
+1. State Hook
+2. Effect Hook
+3. Context Hook
+4. Ref Hook
+5. Performance Hook
+6. Reducer Hook
+7. Other Hooks
+8. Custom Hooks
+
+### State Hook
+O State Hook permite que você adicione estado a um componente de função.
+
+```jsx
+import React, { useState } from 'react';
+
+function Counter() {
+
+    const [count, setCount] = useState(0);
+
+    return (
+        <div>
+            <h1>{count}</h1>
+            <button onClick={() => setCount(count + 1)}>Increment</button>
+        </div>
+    );
+}
+
+export default Counter
+```
+
+#### useChange
+Com o useChange você pode modificar o estado de um elemento enquanto o digita.
+
+```jsx
+import React, { useState } from 'react';
+
+function Input() {
+
+     const [name, setName] = useState();
+
+    return (
+        <input type="text" onChange={(e) => setName(e.target.value)} />
+        <h2>{name}</h2>
+    );
+}
+
+export default Input
+```
+
+#### Updating um objeto
+```jsx
+import React, { useState } from 'react';
+
+function Object() {
+
+    const [person, setPerson] = useState({name: 'John', age: 25});
+
+    const handleNameChange = (e) => {
+        setPerson(p => ({...p, name: e.target.value}));
+    }
+
+    const handleAgeChange = (e) => {
+        setPerson(p => ({...p, age: e.target.value}));
+    }
+
+    return (
+        <div>
+            <h1>{person.name} - {person.age}</h1>
+            <button onClick={() => setPerson({name: 'Doe', age: 30})}>Update</button>
+
+            // Ou
+
+            <input type="text" value={person.name} onChange={handleNameChange} />
+            <input type="number" value={person.age} onChange={handleAgeChange} />
+
+        </div>
+    );
+}
+
+export default Object
+```
+
+#### Updating um array
+```jsx
+import React, { useState } from 'react';
+
+function Array() {
+
+    const [food, setFood] = React.useState(["apple", "banana", "cherry", "date", "elderberry"]);
+
+    const addFood = () => {
+        const newfood = document.getElementById('foodInput').value;
+        setFood([...food, newfood]);
+    }
+
+    const removeFood = (index) => {
+        const newFood = food.filter((item, i) => i !== index);
+        setFood(newFood);
+    }
+
+  return (
+    <div>
+        <h2>List of Food</h2>
+
+        <ul>
+            {food.map((item, index) => (
+                <li key={index} onClick={() => removeFood(index)}>{item}</li>
+            ))}
+        </ul>
+        <input type="text" id='foodInput' placeholder='Enter food name'/>
+        <button onClick={addFood}>Add Food</button>
+
+    </div>
+  )
+}
+
+export default Array
+```
+
+#### Updating um array de objetos
+```jsx
+import React, { useState } from 'react';
+
+function ArrayObject() {
+
+    const [people, setPeople] = React.useState([
+        {name: 'John', age: 25},
+        {name: 'Doe', age: 30},
+        {name: 'Jane', age: 35}
+    ]);
+
+    const addPerson = () => {
+        const name = document.getElementById('nameInput').value;
+        const age = document.getElementById('ageInput').value;
+        setPeople([...people, {name: name, age: age}]);
+    }
+
+    const removePerson = (index) => {
+        const newPeople = people.filter((person, i) => i !== index);
+        setPeople(newPeople);
+    }
+
+  return (
+    <div>
+        <h2>List of People</h2>
+
+        <ul>
+            {people.map((person, index) => (
+                <li key={index} onClick={() => removePerson(index)}>{person.name} - {person.age}</li>
+            ))}
+        </ul>
+        <input type="text" id='nameInput' placeholder='Enter name'/>
+        <input type="number" id='ageInput' placeholder='Enter age'/>
+        <button onClick={addPerson}>Add Person</button>
+
+    </div>
+  )
+}
+
+export default ArrayObject
+```
+
+### Effect Hook
+O Effect Hook permite que você execute efeitos secundários em componentes de função. Efeitos secundários são operações que não podem ser realizadas durante a renderização.
+
+```jsx
+import React, { useState, useEffect } from 'react';
+
+function Counter() {
+
+    const [count, setCount] = useState(0);
+
+    useEffect(() => {
+        document.title = `Count: ${count}`;// Atualiza o título da página
+    }, [count]);// Executa o efeito sempre que o count mudar
+
+    return (
+        <div>
+            <h1>{count}</h1>
+            <button onClick={() => setCount(count + 1)}>Increment</button>
+        </div>
+    );
+}
+
+export default Counter
+```
+
+O segundo argumento do useEffect é uma lista de dependências. Se você passar uma lista vazia, o efeito será executado apenas uma vez após a renderização inicial. Se você passar uma variável, o efeito será executado sempre que a variável mudar. Se você não passar um segundo argumento, o efeito será executado após cada renderização.
+
+***Nota:***
+O useEffect é executado após a renderização do componente.
+
+***Nota:***
+Se você retornar uma função no useEffect, ela será executada antes do próximo efeito.
+
+### useContext
+É um hook que permite a você passar dados através da árvore de componentes sem ter que passar props manualmente em cada nível.
+
+```jsx
+import React, {useState, createContext} from 'react';
+import ComponentB from '../ComponentB';
+
+export const UserContext = createContext();
+
+function ComponentA() {
+
+    const [user, setUser] = useState("John");
+
+  return (
+    <div className='box'>
+        <h1>ComponentA</h1>
+        <h2>{`Hello ${user}`}</h2>
+        <UserContext.Provider value={{user}}>
+            <ComponentB user={user}/>
+        </UserContext.Provider>
+    </div>
+  )
+}
+
+export default ComponentA
+```
+
+```jsx
+import React, {useContext} from 'react';
+import {UserContext} from '../ComponentA';
+
+function ComponentD() {
+
+    const user = useContext(UserContext)
+
+  return (
+    <div className='box'>
+        <h1>ComponentD</h1>
+        <h2>{`Bye ${user.user}`}</h2>
+    </div>
+  )
+}
+
+export default ComponentD
+```
+
+```jsx
+import ComponentA from "./ComponentA";
+
+function App() {
+    
+  return (
+    <ComponentA/>
+  );
+}
+
+export default App
+```
+
+***Imagem do resultado:***
+
+<img src="./useContext.PNG" alt="useContext"></img>
+
+**Props vs Context:**
+
+Props:
+- Passa dados de um componente pai para um componente filho.
+- Bom para passar dados para componentes filhos.
+- Dados são passados manualmente.
+
+Context:
+- Passa dados através da árvore de componentes.
+- Bom para passar dados para componentes aninhados.
+- Dados são passados automaticamente.
+
+### useRef
+É um hook que permite a você acessar o DOM de um elemento.
+
+```jsx
+import React, {useRef} from 'react';
+
+function Input() {
+
+    const inputRef = useRef();
+
+    const handleClick = () => {
+        inputRef.current.focus();
+    }
+
+  return (
+    <div>
+        <input type="text" ref={inputRef}/>
+        <button onClick={handleClick}>Focus</button>
+    </div>
+  )
+}
+
+export default Input
 ```
